@@ -1,5 +1,4 @@
 import { WordCard } from '../components/WordCard'
-import { useSwipeNavigation } from '../hooks/useSwipeNavigation'
 import type { DeckRecord, GroupSnapshot, VocabEntry } from '../types'
 
 type StudyPageProps = {
@@ -33,8 +32,6 @@ export function StudyPage({
   onPrev,
   onNext,
 }: StudyPageProps) {
-  const swipeHandlers = useSwipeNavigation({ onNext, onPrev })
-
   if (!activeDeck || !currentEntry) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -63,7 +60,8 @@ export function StudyPage({
           onEnglishWordClick={onEnglishWordClick}
           onJapaneseSentenceClick={onJapaneseSentenceClick}
           onJapaneseWordClick={onJapaneseWordClick}
-          swipeHandlers={swipeHandlers}
+          onNext={onNext}
+          onPrev={onPrev}
         />
       </div>
 
