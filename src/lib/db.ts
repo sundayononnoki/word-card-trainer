@@ -40,7 +40,7 @@ interface TrainerDB extends DBSchema {
 }
 
 let dbPromise: Promise<IDBPDatabase<TrainerDB>> | null = null
-const BUILTIN_DECK_URL = new URL('decks/default-deck.json', import.meta.env.BASE_URL).toString()
+const BUILTIN_DECK_URL = `${import.meta.env.BASE_URL}decks/default-deck.json`
 
 function getDb() {
   if (!dbPromise) {
