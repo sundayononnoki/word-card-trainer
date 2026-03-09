@@ -40,6 +40,7 @@ interface TrainerDB extends DBSchema {
 }
 
 let dbPromise: Promise<IDBPDatabase<TrainerDB>> | null = null
+const BUILTIN_DECK_URL = new URL('decks/default-deck.json', import.meta.env.BASE_URL).toString()
 
 function getDb() {
   if (!dbPromise) {
@@ -93,7 +94,7 @@ export async function ensureBuiltinDeck() {
     return existingDeck
   }
 
-  const response = await fetch('/decks/default-deck.json')
+  const response = await fetch(BUILTIN_DECK_URL)
   if (!response.ok) {
     throw new Error('Unable to load the built-in deck data.')
   }
