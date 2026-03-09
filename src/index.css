@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans+JP:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Fraunces', serif;
+  --font-body: 'IBM Plex Sans JP', sans-serif;
+  --color-ink: #0e0d0a;
+  --color-mint: #a6ffcb;
+  --color-sunset: #ff8f67;
+  --color-cinder: #171410;
+  --color-warm: #f6ead2;
+}
+
+:root {
+  font-family: var(--font-body);
+  color: #f8f2e7;
+  background:
+    radial-gradient(circle at top left, rgba(255, 160, 103, 0.28), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(166, 255, 203, 0.16), transparent 24%),
+    linear-gradient(145deg, #0d0b08, #1a1510 42%, #090806);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body,
+#root {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.glass-panel {
+  border: 1px solid rgba(255, 248, 231, 0.15);
+  background:
+    linear-gradient(180deg, rgba(255, 249, 238, 0.08), rgba(255, 249, 238, 0.03)),
+    rgba(21, 18, 13, 0.74);
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(248, 242, 231, 0.56);
+}
+
+.surface-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.card-shadow {
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
