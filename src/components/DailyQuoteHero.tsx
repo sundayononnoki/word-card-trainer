@@ -1,11 +1,13 @@
-import type { DailyQuoteCache } from '../types'
+import type { DailyQuoteCache, ThemeMode } from '../types'
 
 type DailyQuoteHeroProps = {
   deckCount: number
   quote: DailyQuoteCache
   onChangeView: (view: 'study' | 'library' | 'settings') => void
   onSpeak: () => void
+  onToggleTheme: () => void
   currentView: 'study' | 'library' | 'settings'
+  themeMode: ThemeMode
 }
 
 const NAV_ITEMS = [
@@ -19,7 +21,9 @@ export function DailyQuoteHero({
   quote,
   onChangeView,
   onSpeak,
+  onToggleTheme,
   currentView,
+  themeMode,
 }: DailyQuoteHeroProps) {
   return (
     <div className="glass-panel flex min-h-[14rem] flex-col justify-between rounded-[1.75rem] border border-[var(--color-surface-border)] px-6 py-6">
@@ -50,7 +54,8 @@ export function DailyQuoteHero({
         ) : null}
       </button>
 
-      <nav className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-6 flex flex-wrap items-center gap-2">
+        <nav className="flex flex-wrap gap-2">
         {NAV_ITEMS.map((item) => {
           const active = item.id === currentView
 
@@ -59,17 +64,34 @@ export function DailyQuoteHero({
               key={item.id}
               className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 active
-                  ? 'border-transparent bg-[var(--color-nav-active-bg)] text-[var(--color-nav-active-text)]'
+                  ? 'border-transparent'
                   : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] text-[var(--color-text-strong)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
               }`}
               onClick={() => onChangeView(item.id)}
+              style={
+                active
+                  ? {
+                      backgroundColor: 'var(--color-nav-active-bg)',
+                      color: 'var(--color-nav-active-text)',
+                    }
+                  : undefined
+              }
               type="button"
             >
               {item.label}
             </button>
           )
         })}
-      </nav>
+        </nav>
+        <button
+          aria-label={`Switch to ${themeMode === 'dark' ? 'light' : 'dark'} mode`}
+          className="rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-4 py-2 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
+          onClick={onToggleTheme}
+          type="button"
+        >
+          {themeMode === 'dark' ? 'Light' : 'Dark'}
+        </button>
+      </div>
     </div>
   )
 }

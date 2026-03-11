@@ -222,6 +222,12 @@ function App() {
     }))
   }
 
+  function toggleThemeMode() {
+    updateSettings({
+      themeMode: settings.themeMode === 'dark' ? 'light' : 'dark',
+    })
+  }
+
   function handleSelectDeck(deckId: string) {
     updateSettings({ activeDeckId: deckId })
     startTransition(() => {
@@ -324,7 +330,9 @@ function App() {
             deckCount={decks.length}
             onChangeView={setView}
             onSpeak={handleSpeakDailyQuote}
+            onToggleTheme={toggleThemeMode}
             quote={dailyQuote}
+            themeMode={settings.themeMode}
           />
         }
         headerPanel={

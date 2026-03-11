@@ -31,8 +31,8 @@
   --color-accent-primary: #a6ffcb;
   --color-accent-secondary: #ffb183;
   --color-accent-glow: rgba(166, 255, 203, 0.24);
-  --color-nav-active-bg: #f6efe2;
-  --color-nav-active-text: #171410;
+  --color-nav-active-bg: #a6ffcb;
+  --color-nav-active-text: #09110b;
   --color-surface-soft: rgba(255, 255, 255, 0.06);
   --color-surface-soft-hover: rgba(255, 255, 255, 0.1);
   --color-surface-raised: rgba(255, 255, 255, 0.08);

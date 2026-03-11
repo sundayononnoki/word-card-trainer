@@ -50,10 +50,18 @@ export function AppShell({
                         key={item.id}
                         className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
                           active
-                            ? 'border-transparent bg-[var(--color-nav-active-bg)] text-[var(--color-nav-active-text)]'
+                            ? 'border-transparent'
                             : 'border-white/10 bg-white/5 text-[var(--color-text-strong)] hover:border-white/25'
                         }`}
                         onClick={() => onChangeView(item.id)}
+                        style={
+                          active
+                            ? {
+                                backgroundColor: 'var(--color-nav-active-bg)',
+                                color: 'var(--color-nav-active-text)',
+                              }
+                            : undefined
+                        }
                         type="button"
                       >
                         {item.label}
