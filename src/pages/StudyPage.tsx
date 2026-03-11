@@ -65,19 +65,19 @@ export function StudyPage({
         />
       </div>
 
-      <div className="mt-auto flex flex-nowrap items-center justify-between gap-2 border-t border-white/8 pt-2 sm:gap-4">
+      <div className="mt-auto flex flex-nowrap items-center justify-between gap-2 border-t border-[var(--color-divider)] pt-2 sm:gap-4">
         <button
-          className="glass-panel whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-white/30 sm:px-4 sm:py-3"
+          className="glass-panel whitespace-nowrap rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-3 py-2 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] sm:px-4 sm:py-3"
           onClick={onPrev}
           type="button"
         >
           ← Previous
         </button>
-        <div className="whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-3 py-2 text-center text-sm text-[var(--color-text-body)] sm:px-4">
+        <div className="whitespace-nowrap rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-3 py-2 text-center text-sm text-[var(--color-text-body)] sm:px-4">
           Card {session.currentIndexInGroup} / {session.currentGroupSize}
         </div>
         <button
-          className="glass-panel whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-white/30 sm:px-4 sm:py-3"
+          className="glass-panel whitespace-nowrap rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-3 py-2 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] sm:px-4 sm:py-3"
           onClick={onNext}
           type="button"
         >

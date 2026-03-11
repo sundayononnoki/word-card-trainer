@@ -74,7 +74,7 @@ export function DeckLibraryPage({
                   <p className="eyebrow">{deck.source === 'builtin' ? 'Built-in deck' : 'Imported deck'}</p>
                   <h2 className="mt-3 font-display text-3xl text-[var(--color-text-strong)]">{deck.name}</h2>
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+                <span className="rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
                   {deck.entryCount} cards
                 </span>
               </div>
@@ -101,7 +101,7 @@ export function DeckLibraryPage({
                       Add word to this deck
                     </button>
                     <button
-                      className="inline-flex rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-white/30 hover:bg-white/10"
+                      className="inline-flex rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-5 py-3 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
                       onClick={onImport}
                       type="button"
                     >
@@ -120,7 +120,7 @@ export function DeckLibraryPage({
                           className={`rounded-[1.5rem] border px-5 py-6 text-left transition ${
                             isCurrentGroup
                               ? 'border-[#a6ffcb]/45 bg-[#a6ffcb]/10 shadow-[0_0_0_1px_rgba(166,255,203,0.16)]'
-                              : 'border-white/10 bg-white/6 hover:border-white/25 hover:bg-white/10'
+                              : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
                           }`}
                           onClick={() => onSelectGroup(deck.id, groupNumber)}
                           type="button"
@@ -135,7 +135,7 @@ export function DeckLibraryPage({
                   </div>
                   <div className="mt-6 flex items-center justify-center gap-5">
                     <button
-                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/6 text-xl text-[var(--color-text-strong)] transition hover:border-white/25 disabled:cursor-not-allowed disabled:opacity-35"
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] text-xl text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] disabled:cursor-not-allowed disabled:opacity-35"
                       disabled={groupPage <= 1}
                       onClick={() => updateGroupPage(groupPage - 1)}
                       type="button"
@@ -147,7 +147,7 @@ export function DeckLibraryPage({
                       <span className="ml-2 text-lg text-[var(--color-text-muted)]">/ {pageCount}</span>
                     </div>
                     <button
-                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/6 text-xl text-[var(--color-text-strong)] transition hover:border-white/25 disabled:cursor-not-allowed disabled:opacity-35"
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] text-xl text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] disabled:cursor-not-allowed disabled:opacity-35"
                       disabled={groupPage >= pageCount}
                       onClick={() => updateGroupPage(groupPage + 1)}
                       type="button"
@@ -177,17 +177,17 @@ export function DeckLibraryPage({
           decks, and progress stay isolated from each other.
         </p>
         <dl className="mt-6 space-y-4 text-sm text-[var(--color-text-body)]">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
             <dt className="eyebrow">Expected columns</dt>
             <dd className="mt-2 leading-6">A: English, B: English sentence, C: Japanese, D: Japanese sentence.</dd>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
             <dt className="eyebrow">Storage mode</dt>
             <dd className="mt-2 leading-6">
               Each upload becomes its own deck in IndexedDB. Importing never merges into another deck.
             </dd>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
             <dt className="eyebrow">Current group size</dt>
             <dd className="mt-2 leading-6">
               {groupSize} cards per set. Change it in Settings and the app will recompute all groups.
@@ -195,7 +195,7 @@ export function DeckLibraryPage({
           </div>
         </dl>
         <button
-          className="mt-6 inline-flex rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-white/30 hover:bg-white/10"
+          className="mt-6 inline-flex rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-5 py-3 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
           onClick={onImport}
           type="button"
         >

@@ -329,15 +329,15 @@ function App() {
         }
         headerPanel={
           activeDeck && view === 'study' ? (
-            <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-white/10 px-5 py-4">
+            <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-[var(--color-surface-border)] px-5 py-4">
               <div className="grid w-full gap-3 md:grid-cols-[minmax(0,1.2fr)_repeat(3,minmax(0,1fr))]">
-                <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="flex h-full flex-col justify-between rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
                   <p className="eyebrow">Active deck</p>
                   <p className="font-display text-3xl leading-[0.95] text-[var(--color-text-strong)]">
                     {activeDeck.name}
                   </p>
                 </div>
-                <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="flex h-full flex-col justify-between rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
                   <p className="eyebrow">Visited overall</p>
                   <p className="font-display text-2xl text-[var(--color-text-strong)]">
                     {session.groupSnapshot.completedEntries}
@@ -346,7 +346,7 @@ function App() {
                     </span>
                   </p>
                 </div>
-                <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="flex h-full flex-col justify-between rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
                   <p className="eyebrow">Current progress</p>
                   <p className="font-display text-2xl text-[var(--color-text-strong)]">
                     {session.groupSnapshot.currentIndexInGroup}
@@ -355,7 +355,7 @@ function App() {
                     </span>
                   </p>
                 </div>
-                <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="flex h-full flex-col justify-between rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
                   <p className="eyebrow">Saved</p>
                   <p className="text-sm leading-6 text-[var(--color-text-strong)]">
                     {session.progress ? new Date(session.progress.updatedAt).toLocaleString() : 'Not yet'}
@@ -364,15 +364,15 @@ function App() {
               </div>
             </div>
           ) : activeDeck ? (
-            <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-white/10 px-5 py-4">
-              <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-[var(--color-surface-border)] px-5 py-4">
+              <div className="w-full rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
                 <p className="eyebrow">Active deck</p>
                 <p className="mt-2 font-display text-3xl text-[var(--color-text-strong)]">{activeDeck.name}</p>
               </div>
             </div>
           ) : (
-            <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-white/10 px-5 py-4">
-              <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-[var(--color-surface-border)] px-5 py-4">
+              <div className="w-full rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
                 <p className="eyebrow">Status</p>
                 <p className="mt-2 text-[var(--color-text-body)]">No deck selected</p>
               </div>

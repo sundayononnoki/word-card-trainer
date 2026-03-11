@@ -44,7 +44,7 @@ const cardVariants = {
   }),
 }
 
-const FLUORESCENT_GREEN = 'text-[#b8ff5c]'
+const FLUORESCENT_GREEN = 'text-[var(--color-accent-primary)]'
 const MOBILE_DRAG_THRESHOLD_RATIO = 0.3
 
 function escapeRegExp(value: string) {
@@ -122,7 +122,7 @@ function highlightText(
     return (
       <span
         key={`${segment}-${index}`}
-        className={`${FLUORESCENT_GREEN} font-semibold [text-shadow:0_0_18px_rgba(184,255,92,0.28)]`}
+        className={`${FLUORESCENT_GREEN} font-semibold [text-shadow:0_0_18px_var(--color-accent-glow)]`}
       >
         {segment}
       </span>
@@ -135,7 +135,7 @@ function highlightEnglishText(text: string, target: string) {
     segment.match ? (
       <span
         key={`${segment.text}-${index}`}
-        className={`${FLUORESCENT_GREEN} font-semibold [text-shadow:0_0_18px_rgba(184,255,92,0.28)]`}
+        className={`${FLUORESCENT_GREEN} font-semibold [text-shadow:0_0_18px_var(--color-accent-glow)]`}
       >
         {segment.text}
       </span>
@@ -252,13 +252,13 @@ export function WordCard({
             aria-label="Speak English word"
             className={`group relative min-h-[10rem] rounded-[2rem] border px-4 py-5 text-center transition sm:px-6 md:h-full md:min-h-0 md:px-7 md:py-6 ${
               isSpeechSupported
-                ? 'border-white/10 bg-white/7 hover:border-[#a6ffcb]/50 hover:bg-white/12'
-                : 'border-white/10 bg-white/5 opacity-70'
+                ? 'border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
+                : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] opacity-70'
             }`}
             onClick={onEnglishWordClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               EN
             </span>
             <div className="flex min-h-full w-full items-center justify-center text-center">
@@ -271,9 +271,7 @@ export function WordCard({
                   multiline={false}
                   textClassName="space-y-3 text-center"
                 >
-                  <span
-                    className={`block font-display tracking-tight text-transparent blur-md ${FLUORESCENT_GREEN}`}
-                  >
+                  <span className={`block font-display tracking-tight text-transparent blur-md ${FLUORESCENT_GREEN}`}>
                     {entry.english}
                   </span>
                   <span className="block text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-text-muted)]">
@@ -287,7 +285,7 @@ export function WordCard({
                   maxFontSize={96}
                   minFontSize={24}
                   multiline={false}
-                  textClassName={`font-display tracking-tight ${FLUORESCENT_GREEN} [text-shadow:0_0_22px_rgba(184,255,92,0.25)]`}
+                  textClassName={`font-display tracking-tight ${FLUORESCENT_GREEN} [text-shadow:0_0_22px_var(--color-accent-glow)]`}
                 >
                   {entry.english}
                 </AutoFitText>
@@ -299,13 +297,13 @@ export function WordCard({
             aria-label="Speak Japanese word"
             className={`group relative min-h-[10rem] rounded-[2rem] border px-4 py-5 text-center transition sm:px-6 md:h-full md:min-h-0 md:px-7 md:py-6 ${
               isSpeechSupported
-                ? 'border-white/10 bg-white/7 hover:border-[#ffb183]/50 hover:bg-white/12'
-                : 'border-white/10 bg-white/5 opacity-70'
+                ? 'border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-accent-secondary)] hover:bg-[var(--color-surface-soft-hover)]'
+                : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] opacity-70'
             }`}
             onClick={onJapaneseWordClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               JA
             </span>
             <div className="flex min-h-full w-full items-center justify-center text-center">
@@ -316,7 +314,7 @@ export function WordCard({
                   maxFontSize={82}
                   minFontSize={22}
                   multiline={false}
-                  textClassName={`font-semibold tracking-tight ${FLUORESCENT_GREEN} [text-shadow:0_0_22px_rgba(184,255,92,0.25)]`}
+                  textClassName={`font-semibold tracking-tight ${FLUORESCENT_GREEN} [text-shadow:0_0_22px_var(--color-accent-glow)]`}
                 >
                   <ruby>
                     {japaneseRuby.base}
@@ -332,7 +330,7 @@ export function WordCard({
                   maxFontSize={82}
                   minFontSize={22}
                   multiline={false}
-                  textClassName={`font-semibold tracking-tight ${FLUORESCENT_GREEN} [text-shadow:0_0_22px_rgba(184,255,92,0.25)]`}
+                  textClassName={`font-semibold tracking-tight ${FLUORESCENT_GREEN} [text-shadow:0_0_22px_var(--color-accent-glow)]`}
                 >
                   {highlightText(entry.japanese, japaneseTargets)}
                 </AutoFitText>
@@ -344,13 +342,13 @@ export function WordCard({
             aria-label="Speak English sentence"
             className={`group relative min-h-[14rem] rounded-[2rem] border p-4 text-center transition sm:p-5 md:h-full md:min-h-0 md:p-7 ${
               isSpeechSupported
-                ? 'border-white/10 bg-white/7 hover:border-[#a6ffcb]/50 hover:bg-white/12'
-                : 'border-white/10 bg-white/5 opacity-70'
+                ? 'border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
+                : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] opacity-70'
             }`}
             onClick={onEnglishSentenceClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               EN SENTENCE
             </span>
             <div className="flex min-h-full w-full items-center justify-center">
@@ -371,13 +369,13 @@ export function WordCard({
             aria-label="Speak Japanese sentence"
             className={`group relative min-h-[14rem] rounded-[2rem] border p-4 text-center transition sm:p-5 md:h-full md:min-h-0 md:p-7 ${
               isSpeechSupported
-                ? 'border-white/10 bg-white/7 hover:border-[#ffb183]/50 hover:bg-white/12'
-                : 'border-white/10 bg-white/5 opacity-70'
+                ? 'border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] hover:border-[var(--color-accent-secondary)] hover:bg-[var(--color-surface-soft-hover)]'
+                : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] opacity-70'
             }`}
             onClick={onJapaneseSentenceClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               JA SENTENCE
             </span>
             <div className="flex min-h-full w-full items-center justify-center">

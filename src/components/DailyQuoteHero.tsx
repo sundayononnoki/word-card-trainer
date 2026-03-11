@@ -22,7 +22,7 @@ export function DailyQuoteHero({
   currentView,
 }: DailyQuoteHeroProps) {
   return (
-    <div className="glass-panel flex min-h-[14rem] flex-col justify-between rounded-[1.75rem] border border-white/10 px-6 py-6">
+    <div className="glass-panel flex min-h-[14rem] flex-col justify-between rounded-[1.75rem] border border-[var(--color-surface-border)] px-6 py-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="eyebrow">Word Card Trainer</p>
@@ -30,13 +30,13 @@ export function DailyQuoteHero({
             Daily quote
           </p>
         </div>
-        <span className="rounded-full border border-white/10 bg-white/6 px-3 py-1 text-sm text-[var(--color-text-muted)]">
+        <span className="rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-3 py-1 text-sm text-[var(--color-text-muted)]">
           {deckCount} deck{deckCount === 1 ? '' : 's'}
         </span>
       </div>
 
       <button
-        className="mt-4 rounded-[1.5rem] border border-white/10 bg-white/5 px-4 py-4 text-left transition hover:border-white/25 hover:bg-white/8"
+        className="mt-4 rounded-[1.5rem] border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] px-4 py-4 text-left transition hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
         onClick={onSpeak}
         type="button"
       >
@@ -60,7 +60,7 @@ export function DailyQuoteHero({
               className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 active
                   ? 'border-transparent bg-[var(--color-nav-active-bg)] text-[var(--color-nav-active-text)]'
-                  : 'border-white/10 bg-white/5 text-[var(--color-text-strong)] hover:border-white/25'
+                  : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] text-[var(--color-text-strong)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
               }`}
               onClick={() => onChangeView(item.id)}
               type="button"
