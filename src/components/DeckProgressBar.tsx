@@ -7,9 +7,9 @@ type DeckProgressBarProps = {
 export function DeckProgressBar({ label, value, detail }: DeckProgressBarProps) {
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-stone-400">
+      <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
         <span>{label}</span>
-        <span className="text-stone-300">{detail}</span>
+        <span className="text-[var(--color-text-body)]">{detail}</span>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-white/8">
         <div

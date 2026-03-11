@@ -26,26 +26,28 @@ export function ImportDeckDialog({
       <div className="glass-panel w-full max-w-xl rounded-[2rem] p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="eyebrow">Import deck</p>
-            <h2 className="mt-3 font-display text-3xl text-stone-100">Bring in another workbook</h2>
+            <p className="eyebrow">Create deck</p>
+            <h2 className="mt-3 font-display text-3xl text-[var(--color-text-strong)]">Create a new deck from workbook</h2>
           </div>
           <button
-            className="rounded-full border border-white/10 px-3 py-2 text-sm text-stone-200 transition hover:border-white/25"
+            className="rounded-full border border-white/10 px-3 py-2 text-sm text-[var(--color-text-body)] transition hover:border-white/25"
             onClick={onClose}
             type="button"
           >
             Close
           </button>
         </div>
-        <p className="mt-4 max-w-lg text-sm leading-6 text-stone-300">
+        <p className="mt-4 max-w-lg text-sm leading-6 text-[var(--color-text-body)]">
           Upload an `.xlsx` file with four columns mapped as English, English sentence, Japanese,
-          and Japanese sentence. Imported decks stay separate from the built-in deck.
+          and Japanese sentence. The workbook will be indexed as a separate deck in IndexedDB.
         </p>
         <label className="mt-6 block rounded-[1.5rem] border border-dashed border-white/18 bg-white/5 p-6 text-center transition hover:border-white/35">
           <input
             accept=".xlsx,.xlsm,.xls,.csv"
             className="sr-only"
             disabled={busy}
+            id="import-deck-file"
+            name="deckWorkbook"
             onChange={(event) => {
               const file = event.target.files?.[0]
               setSelectedFileName(file?.name ?? null)
@@ -56,10 +58,10 @@ export function ImportDeckDialog({
             }}
             type="file"
           />
-          <span className="block font-semibold text-stone-100">
+          <span className="block font-semibold text-[var(--color-text-strong)]">
             {selectedFileName ?? 'Choose a workbook to import'}
           </span>
-          <span className="mt-2 block text-sm text-stone-400">
+          <span className="mt-2 block text-sm text-[var(--color-text-muted)]">
             {busy ? 'Importing and indexing your deck…' : 'Click to select an Excel workbook'}
           </span>
         </label>

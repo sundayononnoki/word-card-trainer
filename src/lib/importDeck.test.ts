@@ -24,6 +24,7 @@ describe('importDeck helpers', () => {
       deckId: 'deck-1',
       order: 0,
       english: 'abandon',
+      origin: 'seed',
     })
     expect(entries[1]).toMatchObject({
       order: 1,

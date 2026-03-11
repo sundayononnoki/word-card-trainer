@@ -10,6 +10,7 @@ type DeckLibraryPageProps = {
   activeDeckId: string
   groupSize: number
   progressByDeck: Record<string, StudyProgress>
+  onAddWord: () => void
   onSelectDeck: (deckId: string) => void
   onSelectGroup: (deckId: string, groupNumber: number) => void
   onImport: () => void
@@ -20,6 +21,7 @@ export function DeckLibraryPage({
   activeDeckId,
   groupSize,
   progressByDeck,
+  onAddWord,
   onSelectDeck,
   onSelectGroup,
   onImport,
@@ -70,9 +72,9 @@ export function DeckLibraryPage({
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="eyebrow">{deck.source === 'builtin' ? 'Built-in deck' : 'Imported deck'}</p>
-                  <h2 className="mt-3 font-display text-3xl text-stone-100">{deck.name}</h2>
+                  <h2 className="mt-3 font-display text-3xl text-[var(--color-text-strong)]">{deck.name}</h2>
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-stone-300">
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
                   {deck.entryCount} cards
                 </span>
               </div>
@@ -90,6 +92,22 @@ export function DeckLibraryPage({
               </div>
               {isActive ? (
                 <div className="mt-8 border-t border-white/8 pt-6">
+                  <div className="mb-6 flex flex-wrap gap-3">
+                    <button
+                      className="inline-flex rounded-full border border-transparent bg-[var(--color-nav-active-bg)] px-5 py-3 text-sm font-semibold text-[var(--color-nav-active-text)] transition hover:opacity-90"
+                      onClick={onAddWord}
+                      type="button"
+                    >
+                      Add word to this deck
+                    </button>
+                    <button
+                      className="inline-flex rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-white/30 hover:bg-white/10"
+                      onClick={onImport}
+                      type="button"
+                    >
+                      Create deck from workbook
+                    </button>
+                  </div>
                   <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     {visibleGroups.map((groupNumber) => {
                       const groupStart = (groupNumber - 1) * groupSize + 1
@@ -107,8 +125,8 @@ export function DeckLibraryPage({
                           onClick={() => onSelectGroup(deck.id, groupNumber)}
                           type="button"
                         >
-                          <p className="font-display text-2xl text-stone-100">Group {groupNumber}</p>
-                          <p className="mt-2 text-sm leading-6 text-stone-400">
+                          <p className="font-display text-2xl text-[var(--color-text-strong)]">Group {groupNumber}</p>
+                          <p className="mt-2 text-sm leading-6 text-[var(--color-text-muted)]">
                             Cards {groupStart}-{groupEnd}
                           </p>
                         </button>
@@ -117,19 +135,19 @@ export function DeckLibraryPage({
                   </div>
                   <div className="mt-6 flex items-center justify-center gap-5">
                     <button
-                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/6 text-xl text-stone-100 transition hover:border-white/25 disabled:cursor-not-allowed disabled:opacity-35"
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/6 text-xl text-[var(--color-text-strong)] transition hover:border-white/25 disabled:cursor-not-allowed disabled:opacity-35"
                       disabled={groupPage <= 1}
                       onClick={() => updateGroupPage(groupPage - 1)}
                       type="button"
                     >
                       ‹
                     </button>
-                    <div className="min-w-20 text-center font-display text-3xl text-stone-100">
+                    <div className="min-w-20 text-center font-display text-3xl text-[var(--color-text-strong)]">
                       {groupPage}
-                      <span className="ml-2 text-lg text-stone-400">/ {pageCount}</span>
+                      <span className="ml-2 text-lg text-[var(--color-text-muted)]">/ {pageCount}</span>
                     </div>
                     <button
-                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/6 text-xl text-stone-100 transition hover:border-white/25 disabled:cursor-not-allowed disabled:opacity-35"
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/6 text-xl text-[var(--color-text-strong)] transition hover:border-white/25 disabled:cursor-not-allowed disabled:opacity-35"
                       disabled={groupPage >= pageCount}
                       onClick={() => updateGroupPage(groupPage + 1)}
                       type="button"
@@ -140,7 +158,7 @@ export function DeckLibraryPage({
                 </div>
               ) : (
                 <button
-                  className="mt-6 inline-flex rounded-full border border-transparent bg-stone-100 px-5 py-3 text-sm font-semibold text-stone-950 transition hover:bg-[#a6ffcb]"
+                  className="mt-6 inline-flex rounded-full border border-transparent bg-[var(--color-nav-active-bg)] px-5 py-3 text-sm font-semibold text-[var(--color-nav-active-text)] transition hover:opacity-90"
                   onClick={() => onSelectDeck(deck.id)}
                   type="button"
                 >
@@ -152,16 +170,22 @@ export function DeckLibraryPage({
         })}
       </div>
       <aside className="glass-panel h-fit rounded-[2rem] p-6">
-        <p className="eyebrow">Import flow</p>
-        <h2 className="mt-3 font-display text-3xl text-stone-100">Add another workbook</h2>
-        <p className="mt-4 text-sm leading-6 text-stone-300">
-          Bring in a new Excel vocabulary file without replacing your built-in deck. Every imported
-          workbook gets its own progress, settings, and resume point.
+        <p className="eyebrow">Deck creation</p>
+        <h2 className="mt-3 font-display text-3xl text-[var(--color-text-strong)]">Create a new deck from workbook</h2>
+        <p className="mt-4 text-sm leading-6 text-[var(--color-text-body)]">
+          Upload a workbook and save it as a separate IndexedDB deck. Your built-in deck, imported
+          decks, and progress stay isolated from each other.
         </p>
-        <dl className="mt-6 space-y-4 text-sm text-stone-300">
+        <dl className="mt-6 space-y-4 text-sm text-[var(--color-text-body)]">
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
             <dt className="eyebrow">Expected columns</dt>
             <dd className="mt-2 leading-6">A: English, B: English sentence, C: Japanese, D: Japanese sentence.</dd>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <dt className="eyebrow">Storage mode</dt>
+            <dd className="mt-2 leading-6">
+              Each upload becomes its own deck in IndexedDB. Importing never merges into another deck.
+            </dd>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
             <dt className="eyebrow">Current group size</dt>
@@ -171,11 +195,11 @@ export function DeckLibraryPage({
           </div>
         </dl>
         <button
-          className="mt-6 inline-flex rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-stone-100 transition hover:border-white/30 hover:bg-white/10"
+          className="mt-6 inline-flex rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-white/30 hover:bg-white/10"
           onClick={onImport}
           type="button"
         >
-          Import workbook
+          Create deck
         </button>
       </aside>
     </section>

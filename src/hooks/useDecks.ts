@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react'
-import { ensureBuiltinDeck, getAllProgress, getEntriesForDeck, listDecks, saveImportedDeck } from '../lib/db'
+import {
+  appendEntryToDeck,
+  ensureBuiltinDeck,
+  getAllProgress,
+  getEntriesForDeck,
+  listDecks,
+  saveImportedDeck,
+} from '../lib/db'
 import { createImportedDeck } from '../lib/importDeck'
-import type { DeckRecord, StudyProgress, VocabEntry } from '../types'
+import type { DeckRecord, NewVocabEntryDraft, StudyProgress, VocabEntry } from '../types'
 
 export function useDecks(activeDeckId: string) {
   const [ready, setReady] = useState(false)
@@ -25,6 +32,11 @@ export function useDecks(activeDeckId: string) {
     const deckRecords = await listDecks()
     setDecks(deckRecords)
     await refreshProgress()
+  }
+
+  async function refreshActiveDeckEntries(deckId: string) {
+    const deckEntries = await getEntriesForDeck(deckId)
+    setEntries(deckEntries)
   }
 
   useEffect(() => {
@@ -86,6 +98,15 @@ export function useDecks(activeDeckId: string) {
     return imported.deck
   }
 
+  async function addWord(deckId: string, draft: NewVocabEntryDraft) {
+    const result = await appendEntryToDeck(deckId, draft)
+    await refreshDeckIndex()
+    if (deckId === activeDeckId) {
+      await refreshActiveDeckEntries(deckId)
+    }
+    return result
+  }
+
   return {
     ready,
     error,
@@ -94,5 +115,6 @@ export function useDecks(activeDeckId: string) {
     progressByDeck,
     activeDeck: decks.find((deck) => deck.id === activeDeckId) ?? decks[0] ?? null,
     importDeck,
+    addWord,
   }
 }

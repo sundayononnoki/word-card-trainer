@@ -51,6 +51,7 @@ export function rowsToEntries(rows: unknown[][], deckId: string): VocabEntry[] {
       englishSentence,
       japanese,
       japaneseSentence,
+      origin: 'seed',
     })
   }
 

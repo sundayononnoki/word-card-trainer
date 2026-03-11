@@ -2,6 +2,10 @@ export type DeckSource = 'builtin' | 'imported'
 
 export type ViewName = 'library' | 'study' | 'settings'
 
+export type ThemeMode = 'light' | 'dark'
+
+export type EntryOrigin = 'seed' | 'user'
+
 export type VocabEntry = {
   id: string
   deckId: string
@@ -10,7 +14,10 @@ export type VocabEntry = {
   englishSentence: string
   japanese: string
   japaneseSentence: string
+  origin?: EntryOrigin
 }
+
+export type NewVocabEntryDraft = Omit<VocabEntry, 'id' | 'deckId' | 'order' | 'origin'>
 
 export type DeckRecord = {
   id: string
@@ -27,6 +34,7 @@ export type AppSettings = {
   groupSize: number
   hideEnglishByDefault: boolean
   autoSpeakWord: boolean
+  themeMode: ThemeMode
   preferredVoiceURI?: string
   preferredJapaneseVoiceURI?: string
 }
@@ -50,13 +58,22 @@ export type GroupSnapshot = {
   totalEntries: number
 }
 
+export type DailyQuoteCache = {
+  dayKey: string
+  text: string
+  author: string
+  source: 'remote' | 'fallback'
+  fetchedAt: number
+}
+
 export const BUILTIN_DECK_ID = 'builtin-core'
 
-export const BUILTIN_DECK_VERSION = '2026-03-07-core-9000'
+export const BUILTIN_DECK_VERSION = '2026-03-11-core-9000'
 
 export const DEFAULT_SETTINGS: AppSettings = {
   activeDeckId: BUILTIN_DECK_ID,
   groupSize: 20,
   hideEnglishByDefault: false,
   autoSpeakWord: false,
+  themeMode: 'dark',
 }

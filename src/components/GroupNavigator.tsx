@@ -14,7 +14,7 @@ export function GroupNavigator({
   return (
     <div className="glass-panel flex items-center justify-between rounded-[1.5rem] px-4 py-3">
       <button
-        className="rounded-full border border-white/10 px-3 py-2 text-sm text-stone-200 transition hover:border-white/30"
+        className="rounded-full border border-white/10 px-3 py-2 text-sm text-[var(--color-text-strong)] transition hover:border-white/30"
         onClick={onPrevGroup}
         type="button"
       >
@@ -22,13 +22,13 @@ export function GroupNavigator({
       </button>
       <div className="text-center">
         <p className="eyebrow">Group</p>
-        <p className="mt-1 font-display text-2xl text-stone-100">
+        <p className="mt-1 font-display text-2xl text-[var(--color-text-strong)]">
           {currentGroupNumber}
-          <span className="ml-2 text-base text-stone-400">/ {totalGroups}</span>
+          <span className="ml-2 text-base text-[var(--color-text-muted)]">/ {totalGroups}</span>
         </p>
       </div>
       <button
-        className="rounded-full border border-white/10 px-3 py-2 text-sm text-stone-200 transition hover:border-white/30"
+        className="rounded-full border border-white/10 px-3 py-2 text-sm text-[var(--color-text-strong)] transition hover:border-white/30"
         onClick={onNextGroup}
         type="button"
       >

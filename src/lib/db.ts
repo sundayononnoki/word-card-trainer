@@ -1,17 +1,21 @@
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
+import { mergeBuiltinEntries, normalizeSeedEntries } from './builtinDeck'
 import {
   BUILTIN_DECK_ID,
   BUILTIN_DECK_VERSION,
   DEFAULT_SETTINGS,
   type AppSettings,
+  type DailyQuoteCache,
   type DeckRecord,
+  type NewVocabEntryDraft,
   type StudyProgress,
   type VocabEntry,
 } from '../types'
 
 const DB_NAME = 'word-card-trainer'
-const DB_VERSION = 1
+const DB_VERSION = 2
 const SETTINGS_KEY = 'singleton'
+const DAILY_QUOTE_CACHE_KEY = 'daily-quote'
 
 interface TrainerDB extends DBSchema {
   decks: {
@@ -36,6 +40,10 @@ interface TrainerDB extends DBSchema {
   settings: {
     key: string
     value: AppSettings
+  }
+  quoteCache: {
+    key: string
+    value: DailyQuoteCache
   }
 }
 
@@ -64,6 +72,10 @@ function getDb() {
         if (!db.objectStoreNames.contains('settings')) {
           db.createObjectStore('settings')
         }
+
+        if (!db.objectStoreNames.contains('quoteCache')) {
+          db.createObjectStore('quoteCache')
+        }
       },
     })
   }
@@ -89,6 +101,14 @@ async function replaceEntriesForDeck(
 export async function ensureBuiltinDeck() {
   const db = await getDb()
   const existingDeck = await db.get('decks', BUILTIN_DECK_ID)
+  const existingEntries =
+    existingDeck
+      ? await db.getAllFromIndex(
+          'entries',
+          'by-deck-order',
+          IDBKeyRange.bound([BUILTIN_DECK_ID, 0], [BUILTIN_DECK_ID, Number.MAX_SAFE_INTEGER]),
+        )
+      : []
 
   if (existingDeck?.version === BUILTIN_DECK_VERSION) {
     return existingDeck
@@ -100,12 +120,8 @@ export async function ensureBuiltinDeck() {
   }
 
   const rawEntries = (await response.json()) as VocabEntry[]
-  const entries = rawEntries.map((entry, index) => ({
-    ...entry,
-    id: `${BUILTIN_DECK_ID}::${index + 1}`,
-    deckId: BUILTIN_DECK_ID,
-    order: index,
-  }))
+  const seedEntries = normalizeSeedEntries(rawEntries, BUILTIN_DECK_ID)
+  const entries = mergeBuiltinEntries(seedEntries, existingEntries, BUILTIN_DECK_ID)
   const now = Date.now()
   const deck: DeckRecord = {
     id: BUILTIN_DECK_ID,
@@ -124,6 +140,48 @@ export async function ensureBuiltinDeck() {
 export async function saveImportedDeck(deck: DeckRecord, entries: VocabEntry[]) {
   const db = await getDb()
   await replaceEntriesForDeck(db, deck, entries)
+}
+
+function buildUserEntryId(deckId: string) {
+  const suffix =
+    typeof crypto !== 'undefined' && 'randomUUID' in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+
+  return `${deckId}::user-${suffix}`
+}
+
+export async function appendEntryToDeck(deckId: string, draft: NewVocabEntryDraft) {
+  const db = await getDb()
+  const deck = await db.get('decks', deckId)
+
+  if (!deck) {
+    throw new Error('The selected deck could not be found.')
+  }
+
+  const existingEntries = await getEntriesForDeck(deckId)
+  const entry: VocabEntry = {
+    ...draft,
+    id: buildUserEntryId(deckId),
+    deckId,
+    order: existingEntries.length,
+    origin: 'user',
+  }
+  const updatedDeck: DeckRecord = {
+    ...deck,
+    entryCount: existingEntries.length + 1,
+    updatedAt: Date.now(),
+  }
+
+  const tx = db.transaction(['decks', 'entries'], 'readwrite')
+  await tx.objectStore('entries').put(entry, entry.id)
+  await tx.objectStore('decks').put(updatedDeck, updatedDeck.id)
+  await tx.done
+
+  return {
+    deck: updatedDeck,
+    entry,
+  }
 }
 
 export async function listDecks() {
@@ -164,4 +222,14 @@ export async function getSettings(): Promise<AppSettings> {
 export async function saveSettings(settings: AppSettings) {
   const db = await getDb()
   await db.put('settings', settings, SETTINGS_KEY)
+}
+
+export async function getDailyQuoteCache(): Promise<DailyQuoteCache | null> {
+  const db = await getDb()
+  return (await db.get('quoteCache', DAILY_QUOTE_CACHE_KEY)) ?? null
+}
+
+export async function saveDailyQuoteCache(cache: DailyQuoteCache) {
+  const db = await getDb()
+  await db.put('quoteCache', cache, DAILY_QUOTE_CACHE_KEY)
 }

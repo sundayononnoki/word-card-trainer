@@ -258,7 +258,7 @@ export function WordCard({
             onClick={onEnglishWordClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-stone-400">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               EN
             </span>
             <div className="flex min-h-full w-full items-center justify-center text-center">
@@ -276,7 +276,7 @@ export function WordCard({
                   >
                     {entry.english}
                   </span>
-                  <span className="block text-xs font-semibold uppercase tracking-[0.24em] text-stone-300">
+                  <span className="block text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-text-muted)]">
                     Tap to reveal and speak
                   </span>
                 </AutoFitText>
@@ -305,7 +305,7 @@ export function WordCard({
             onClick={onJapaneseWordClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-stone-400">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               JA
             </span>
             <div className="flex min-h-full w-full items-center justify-center text-center">
@@ -320,7 +320,7 @@ export function WordCard({
                 >
                   <ruby>
                     {japaneseRuby.base}
-                    <rt className="pb-2 text-[0.42em] font-medium tracking-[0.08em] text-[#d9ff9c]">
+                    <rt className="pb-2 text-[0.42em] font-medium tracking-[0.08em] text-[color:var(--color-accent-primary)]">
                       {japaneseRuby.reading}
                     </rt>
                   </ruby>
@@ -350,7 +350,7 @@ export function WordCard({
             onClick={onEnglishSentenceClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-stone-400">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               EN SENTENCE
             </span>
             <div className="flex min-h-full w-full items-center justify-center">
@@ -360,7 +360,7 @@ export function WordCard({
                 lineHeight={1.15}
                 maxFontSize={52}
                 minFontSize={20}
-                textClassName="max-w-[22ch] text-center tracking-tight text-stone-100"
+                textClassName="max-w-[22ch] text-center tracking-tight text-[var(--color-text-strong)]"
               >
                 {highlightEnglishText(entry.englishSentence, entry.english)}
               </AutoFitText>
@@ -377,7 +377,7 @@ export function WordCard({
             onClick={onJapaneseSentenceClick}
             type="button"
           >
-            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-stone-400">
+            <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-white/10 px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
               JA SENTENCE
             </span>
             <div className="flex min-h-full w-full items-center justify-center">
@@ -387,7 +387,7 @@ export function WordCard({
                 lineHeight={1.2}
                 maxFontSize={56}
                 minFontSize={22}
-                textClassName="max-w-[16ch] text-center tracking-tight text-stone-100"
+                textClassName="max-w-[16ch] text-center tracking-tight text-[var(--color-text-strong)]"
               >
                 {highlightText(entry.japaneseSentence, japaneseTargets)}
               </AutoFitText>

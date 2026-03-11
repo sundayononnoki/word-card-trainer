@@ -1,9 +1,12 @@
 import { startTransition, useEffect, useState } from 'react'
+import { AddWordDialog } from './components/AddWordDialog'
 import { AppShell } from './components/AppShell'
+import { DailyQuoteHero } from './components/DailyQuoteHero'
 import { ImportDeckDialog } from './components/ImportDeckDialog'
 import { DeckLibraryPage } from './pages/DeckLibraryPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { StudyPage } from './pages/StudyPage'
+import { useDailyQuote } from './hooks/useDailyQuote'
 import { useDecks } from './hooks/useDecks'
 import { useSpeech } from './hooks/useSpeech'
 import { useStudySession } from './hooks/useStudySession'
@@ -15,9 +18,13 @@ function App() {
   const [settingsReady, setSettingsReady] = useState(false)
   const [view, setView] = useState<ViewName>('study')
   const [isImportOpen, setIsImportOpen] = useState(false)
+  const [isAddWordOpen, setIsAddWordOpen] = useState(false)
   const [importError, setImportError] = useState<string | null>(null)
   const [importBusy, setImportBusy] = useState(false)
+  const [addWordError, setAddWordError] = useState<string | null>(null)
+  const [addWordBusy, setAddWordBusy] = useState(false)
   const [revealedEntryId, setRevealedEntryId] = useState<string | null>(null)
+  const dailyQuote = useDailyQuote()
   const {
     isSupported,
     voices,
@@ -33,6 +40,7 @@ function App() {
     progressByDeck,
     activeDeck,
     importDeck,
+    addWord,
   } = useDecks(settings.activeDeckId)
   const session = useStudySession({
     deckId: settings.activeDeckId,
@@ -64,6 +72,10 @@ function App() {
     }
     void saveSettings(settings)
   }, [settings, settingsReady])
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = settings.themeMode
+  }, [settings.themeMode])
 
   useEffect(() => {
     if (
@@ -179,6 +191,30 @@ function App() {
     }
   }
 
+  async function handleAddWord(draft: {
+    english: string
+    englishSentence: string
+    japanese: string
+    japaneseSentence: string
+  }) {
+    if (!activeDeck) {
+      return
+    }
+
+    setAddWordBusy(true)
+    setAddWordError(null)
+    try {
+      await addWord(activeDeck.id, draft)
+      setIsAddWordOpen(false)
+    } catch (caughtError) {
+      setAddWordError(
+        caughtError instanceof Error ? caughtError.message : 'Unable to add this card.',
+      )
+    } finally {
+      setAddWordBusy(false)
+    }
+  }
+
   function updateSettings(patch: Partial<AppSettings>) {
     setSettings((current) => ({
       ...current,
@@ -257,6 +293,17 @@ function App() {
     })
   }
 
+  function handleSpeakDailyQuote() {
+    const text = dailyQuote.author
+      ? `${dailyQuote.text}. By ${dailyQuote.author}.`
+      : dailyQuote.text
+
+    speakText(text, {
+      lang: 'en-US',
+      preferredVoiceURI: settings.preferredVoiceURI,
+    })
+  }
+
   const isEnglishVisible =
     !settings.hideEnglishByDefault || revealedEntryId === currentEntry?.id
   const mergedProgressByDeck = session.progress
@@ -271,37 +318,46 @@ function App() {
       <AppShell
         currentView={view}
         deckCount={decks.length}
+        heroPanel={
+          <DailyQuoteHero
+            currentView={view}
+            deckCount={decks.length}
+            onChangeView={setView}
+            onSpeak={handleSpeakDailyQuote}
+            quote={dailyQuote}
+          />
+        }
         headerPanel={
           activeDeck && view === 'study' ? (
             <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-white/10 px-5 py-4">
               <div className="grid w-full gap-3 md:grid-cols-[minmax(0,1.2fr)_repeat(3,minmax(0,1fr))]">
                 <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="eyebrow">Active deck</p>
-                  <p className="font-display text-3xl leading-[0.95] text-stone-100">
+                  <p className="font-display text-3xl leading-[0.95] text-[var(--color-text-strong)]">
                     {activeDeck.name}
                   </p>
                 </div>
                 <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="eyebrow">Visited overall</p>
-                  <p className="font-display text-2xl text-stone-100">
+                  <p className="font-display text-2xl text-[var(--color-text-strong)]">
                     {session.groupSnapshot.completedEntries}
-                    <span className="ml-2 text-base text-stone-400">
+                    <span className="ml-2 text-base text-[var(--color-text-muted)]">
                       / {session.groupSnapshot.totalEntries}
                     </span>
                   </p>
                 </div>
                 <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="eyebrow">Current progress</p>
-                  <p className="font-display text-2xl text-stone-100">
+                  <p className="font-display text-2xl text-[var(--color-text-strong)]">
                     {session.groupSnapshot.currentIndexInGroup}
-                    <span className="ml-2 text-base text-stone-400">
+                    <span className="ml-2 text-base text-[var(--color-text-muted)]">
                       / {session.groupSnapshot.currentGroupSize}
                     </span>
                   </p>
                 </div>
                 <div className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="eyebrow">Saved</p>
-                  <p className="text-sm leading-6 text-stone-100">
+                  <p className="text-sm leading-6 text-[var(--color-text-strong)]">
                     {session.progress ? new Date(session.progress.updatedAt).toLocaleString() : 'Not yet'}
                   </p>
                 </div>
@@ -311,14 +367,14 @@ function App() {
             <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-white/10 px-5 py-4">
               <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-4">
                 <p className="eyebrow">Active deck</p>
-                <p className="mt-2 font-display text-3xl text-stone-100">{activeDeck.name}</p>
+                <p className="mt-2 font-display text-3xl text-[var(--color-text-strong)]">{activeDeck.name}</p>
               </div>
             </div>
           ) : (
             <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-white/10 px-5 py-4">
               <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-4">
                 <p className="eyebrow">Status</p>
-                <p className="mt-2 text-stone-200">No deck selected</p>
+                <p className="mt-2 text-[var(--color-text-body)]">No deck selected</p>
               </div>
             </div>
           )
@@ -329,8 +385,8 @@ function App() {
           <div className="flex min-h-[60vh] items-center justify-center">
             <div className="glass-panel max-w-md p-8 text-center">
               <p className="eyebrow">Loading</p>
-              <h2 className="mt-3 font-display text-3xl text-stone-100">Preparing your deck room</h2>
-              <p className="mt-3 text-sm text-stone-300">
+              <h2 className="mt-3 font-display text-3xl text-[var(--color-text-strong)]">Preparing your deck room</h2>
+              <p className="mt-3 text-sm text-[var(--color-text-body)]">
                 The built-in 9000-word deck is being synced into IndexedDB for offline study.
               </p>
             </div>
@@ -339,7 +395,7 @@ function App() {
           <div className="flex min-h-[60vh] items-center justify-center">
             <div className="glass-panel max-w-md p-8 text-center">
               <p className="eyebrow">Database error</p>
-              <h2 className="mt-3 font-display text-3xl text-stone-100">The deck room did not boot</h2>
+              <h2 className="mt-3 font-display text-3xl text-[var(--color-text-strong)]">The deck room did not boot</h2>
               <p className="mt-3 text-sm text-rose-200">{error}</p>
             </div>
           </div>
@@ -351,6 +407,10 @@ function App() {
                 decks={decks}
                 groupSize={settings.groupSize}
                 onImport={() => setIsImportOpen(true)}
+                onAddWord={() => {
+                  setAddWordError(null)
+                  setIsAddWordOpen(true)
+                }}
                 onSelectDeck={handleSelectDeck}
                 onSelectGroup={handleSelectGroup}
                 progressByDeck={mergedProgressByDeck}
@@ -379,6 +439,7 @@ function App() {
                 hideEnglishByDefault={settings.hideEnglishByDefault}
                 autoSpeakWord={settings.autoSpeakWord}
                 isSpeechSupported={isSupported}
+                themeMode={settings.themeMode}
                 preferredVoiceURI={settings.preferredVoiceURI}
                 preferredJapaneseVoiceURI={settings.preferredJapaneseVoiceURI}
                 recommendedEnglishVoiceURI={recommendedEnglishVoiceURI}
@@ -387,6 +448,7 @@ function App() {
                 onAutoSpeakChange={(checked) => updateSettings({ autoSpeakWord: checked })}
                 onGroupSizeChange={(groupSize) => updateSettings({ groupSize })}
                 onHideEnglishChange={(checked) => updateSettings({ hideEnglishByDefault: checked })}
+                onThemeModeChange={(themeMode) => updateSettings({ themeMode })}
                 onPreferredVoiceChange={(preferredVoiceURI) => updateSettings({ preferredVoiceURI })}
                 onPreferredJapaneseVoiceChange={(preferredJapaneseVoiceURI) =>
                   updateSettings({ preferredJapaneseVoiceURI })
@@ -405,6 +467,18 @@ function App() {
           setImportError(null)
         }}
         onImport={handleImport}
+      />
+      <AddWordDialog
+        busy={addWordBusy}
+        deckName={activeDeck?.name ?? 'current deck'}
+        error={addWordError}
+        isOpen={isAddWordOpen}
+        key={`${activeDeck?.id ?? 'none'}-${isAddWordOpen ? 'open' : 'closed'}`}
+        onClose={() => {
+          setIsAddWordOpen(false)
+          setAddWordError(null)
+        }}
+        onSubmit={handleAddWord}
       />
     </>
   )
