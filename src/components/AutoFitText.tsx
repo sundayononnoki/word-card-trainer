@@ -15,6 +15,8 @@ type AutoFitTextProps = {
   maxFontSize: number
   lineHeight?: number
   multiline?: boolean
+  safePaddingX?: number
+  safePaddingY?: number
 }
 
 const fitCache = new Map<string, FitCacheEntry>()
@@ -28,6 +30,8 @@ export function AutoFitText({
   maxFontSize,
   lineHeight = 1.1,
   multiline = true,
+  safePaddingX = 0,
+  safePaddingY = 0,
 }: AutoFitTextProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const textRef = useRef<HTMLDivElement | null>(null)
@@ -44,8 +48,8 @@ export function AutoFitText({
     let frameId = 0
 
     const fitText = () => {
-      const availableWidth = container.clientWidth
-      const availableHeight = container.clientHeight
+      const availableWidth = Math.max(0, container.clientWidth - safePaddingX * 2)
+      const availableHeight = Math.max(0, container.clientHeight - safePaddingY * 2)
 
       if (!availableWidth || !availableHeight) {
         return
@@ -120,7 +124,7 @@ export function AutoFitText({
       cancelAnimationFrame(frameId)
       resizeObserver.disconnect()
     }
-  }, [fitKey, lineHeight, maxFontSize, minFontSize, multiline])
+  }, [fitKey, lineHeight, maxFontSize, minFontSize, multiline, safePaddingX, safePaddingY])
 
   return (
     <div

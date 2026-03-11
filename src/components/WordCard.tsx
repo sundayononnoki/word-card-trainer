@@ -2,12 +2,10 @@ import {
   AnimatePresence,
   motion,
   type PanInfo,
-  useDragControls,
   useMotionValue,
   useReducedMotion,
   useTransform,
 } from 'framer-motion'
-import type { PointerEvent as ReactPointerEvent } from 'react'
 import { AutoFitText } from './AutoFitText'
 import { splitEnglishHighlightSegments } from '../lib/englishHighlight'
 import type { VocabEntry } from '../types'
@@ -31,16 +29,22 @@ const cardVariants = {
     opacity: 0,
     x: direction > 0 ? 80 : -80,
     rotate: direction > 0 ? 2 : -2,
+    scaleX: 0.985,
+    scaleY: 1.018,
   }),
   center: {
     opacity: 1,
     x: 0,
     rotate: 0,
+    scaleX: 1,
+    scaleY: 1,
   },
   exit: (direction: 1 | -1) => ({
     opacity: 0,
     x: direction > 0 ? -80 : 80,
     rotate: direction > 0 ? -2 : 2,
+    scaleX: 0.985,
+    scaleY: 1.018,
   }),
 }
 
@@ -160,21 +164,12 @@ export function WordCard({
 }: WordCardProps) {
   const japaneseTargets = getJapaneseHighlightTargets(entry.japanese)
   const japaneseRuby = parseJapaneseRuby(entry.japanese)
-  const dragControls = useDragControls()
   const prefersReducedMotion = useReducedMotion()
   const dragX = useMotionValue(0)
   const rotate = useTransform(dragX, [-320, 0, 320], [-2.4, 0, 2.4])
   const scaleX = useTransform(dragX, [-320, 0, 320], [0.985, 1, 0.985])
   const scaleY = useTransform(dragX, [-320, 0, 320], [1.018, 1, 1.018])
   const dragGlow = useTransform(dragX, [-320, -40, 0, 40, 320], [0.18, 0.06, 0, 0.06, 0.18])
-
-  function beginEdgeDrag(event: ReactPointerEvent<HTMLDivElement>) {
-    if (event.pointerType === 'mouse' && event.button !== 0) {
-      return
-    }
-
-    dragControls.start(event, { snapToCursor: false })
-  }
 
   function handleDragEnd(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) {
     const threshold = window.innerWidth * MOBILE_DRAG_THRESHOLD_RATIO
@@ -198,47 +193,33 @@ export function WordCard({
         animate="center"
         className="card-shadow glass-panel relative h-auto min-h-0 w-full touch-pan-y overflow-visible rounded-[2.5rem] border border-white/10 p-4 sm:p-6 md:h-full md:overflow-hidden md:p-8"
         custom={direction}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={prefersReducedMotion ? 0 : 0.24}
+        dragMomentum={false}
+        dragTransition={{
+          bounceDamping: 14,
+          bounceStiffness: 220,
+          power: 0.18,
+          timeConstant: 180,
+        }}
         exit="exit"
         initial="enter"
+        onDragEnd={handleDragEnd}
+        style={
+          prefersReducedMotion
+            ? { x: dragX }
+            : {
+                x: dragX,
+                rotate,
+                scaleX,
+                scaleY,
+              }
+        }
         transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
         variants={cardVariants}
       >
-        <motion.div
-          className="relative h-full w-full touch-pan-y"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragControls={dragControls}
-          dragElastic={prefersReducedMotion ? 0 : 0.24}
-          dragListener={false}
-          dragMomentum={false}
-          dragTransition={{
-            bounceDamping: 14,
-            bounceStiffness: 220,
-            power: 0.18,
-            timeConstant: 180,
-          }}
-          onDragEnd={handleDragEnd}
-          style={
-            prefersReducedMotion
-              ? { x: dragX }
-              : {
-                  x: dragX,
-                  rotate,
-                  scaleX,
-                  scaleY,
-                }
-          }
-        >
-          <motion.div
-            aria-hidden="true"
-            className="pointer-events-auto absolute inset-y-0 left-0 z-20 w-[calc(50%-4rem)] touch-none select-none md:hidden"
-            onPointerDown={beginEdgeDrag}
-          />
-          <motion.div
-            aria-hidden="true"
-            className="pointer-events-auto absolute inset-y-0 right-0 z-20 w-[calc(50%-4rem)] touch-none select-none md:hidden"
-            onPointerDown={beginEdgeDrag}
-          />
+        <div className="relative h-full w-full touch-pan-y">
           <motion.div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 rounded-[2rem] md:hidden"
@@ -264,11 +245,12 @@ export function WordCard({
             <div className="flex min-h-full w-full items-center justify-center text-center">
               {hideEnglishByDefault && !isEnglishVisible ? (
                 <AutoFitText
-                  containerClassName="px-2"
+                  containerClassName="px-2 py-3"
                   fitKey="study-en-word-hidden"
                   maxFontSize={96}
                   minFontSize={26}
                   multiline={false}
+                  safePaddingY={12}
                   textClassName="space-y-3 text-center"
                 >
                   <span className={`block font-display tracking-tight text-transparent blur-md ${FLUORESCENT_GREEN}`}>
@@ -280,11 +262,12 @@ export function WordCard({
                 </AutoFitText>
               ) : (
                 <AutoFitText
-                  containerClassName="px-2"
+                  containerClassName="px-2 py-3"
                   fitKey="study-en-word"
                   maxFontSize={96}
                   minFontSize={24}
                   multiline={false}
+                  safePaddingY={12}
                   textClassName={`font-display tracking-tight ${FLUORESCENT_GREEN} [text-shadow:0_0_22px_var(--color-accent-glow)]`}
                 >
                   {entry.english}
@@ -349,7 +332,7 @@ export function WordCard({
             type="button"
           >
             <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
-              EN SENTENCE
+              EN
             </span>
             <div className="flex min-h-full w-full items-center justify-center">
               <AutoFitText
@@ -376,7 +359,7 @@ export function WordCard({
             type="button"
           >
             <span className="pointer-events-none absolute right-4 top-4 rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
-              JA SENTENCE
+              JA
             </span>
             <div className="flex min-h-full w-full items-center justify-center">
               <AutoFitText
@@ -392,7 +375,7 @@ export function WordCard({
             </div>
           </button>
           </div>
-        </motion.div>
+        </div>
       </motion.article>
     </AnimatePresence>
   )

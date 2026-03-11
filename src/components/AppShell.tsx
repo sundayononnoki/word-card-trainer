@@ -48,7 +48,7 @@ export function AppShell({
                     return (
                       <button
                         key={item.id}
-                        className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                        className={`inline-flex h-11 items-center justify-center rounded-full border px-5 text-sm font-semibold leading-none transition ${
                           active
                             ? 'border-transparent'
                             : 'border-white/10 bg-white/5 text-[var(--color-text-strong)] hover:border-white/25'

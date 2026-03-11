@@ -62,7 +62,7 @@ export function DailyQuoteHero({
           return (
             <button
               key={item.id}
-              className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+              className={`inline-flex h-11 items-center justify-center rounded-full border px-5 text-sm font-semibold leading-none transition ${
                 active
                   ? 'border-transparent'
                   : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] text-[var(--color-text-strong)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
@@ -85,7 +85,7 @@ export function DailyQuoteHero({
         </nav>
         <button
           aria-label={`Switch to ${themeMode === 'dark' ? 'light' : 'dark'} mode`}
-          className="rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-4 py-2 text-sm font-semibold text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
+          className="inline-flex h-11 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-5 text-sm font-semibold leading-none text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
           onClick={onToggleTheme}
           type="button"
         >
