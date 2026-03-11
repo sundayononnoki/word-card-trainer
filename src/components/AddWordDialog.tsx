@@ -122,8 +122,12 @@ export function AddWordDialog({
               Cancel
             </button>
             <button
-              className="rounded-full border border-transparent bg-[var(--color-nav-active-bg)] px-5 py-3 text-sm font-semibold text-[var(--color-nav-active-text)] transition hover:bg-[var(--color-accent-primary)] disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-full border border-transparent px-5 py-3 text-sm font-semibold transition hover:opacity-92 disabled:cursor-not-allowed disabled:opacity-60"
               disabled={busy}
+              style={{
+                backgroundColor: 'var(--color-nav-active-bg)',
+                color: 'var(--color-nav-active-text)',
+              }}
               type="submit"
             >
               {busy ? 'Saving…' : 'Add card'}

@@ -94,8 +94,12 @@ export function DeckLibraryPage({
                 <div className="mt-8 border-t border-white/8 pt-6">
                   <div className="mb-6 flex flex-wrap gap-3">
                     <button
-                      className="inline-flex rounded-full border border-transparent bg-[var(--color-nav-active-bg)] px-5 py-3 text-sm font-semibold text-[var(--color-nav-active-text)] transition hover:opacity-90"
+                      className="inline-flex rounded-full border border-transparent px-5 py-3 text-sm font-semibold transition hover:opacity-90"
                       onClick={onAddWord}
+                      style={{
+                        backgroundColor: 'var(--color-nav-active-bg)',
+                        color: 'var(--color-nav-active-text)',
+                      }}
                       type="button"
                     >
                       Add word to this deck
@@ -158,8 +162,12 @@ export function DeckLibraryPage({
                 </div>
               ) : (
                 <button
-                  className="mt-6 inline-flex rounded-full border border-transparent bg-[var(--color-nav-active-bg)] px-5 py-3 text-sm font-semibold text-[var(--color-nav-active-text)] transition hover:opacity-90"
+                  className="mt-6 inline-flex rounded-full border border-transparent px-5 py-3 text-sm font-semibold transition hover:opacity-90"
                   onClick={() => onSelectDeck(deck.id)}
+                  style={{
+                    backgroundColor: 'var(--color-nav-active-bg)',
+                    color: 'var(--color-nav-active-text)',
+                  }}
                   type="button"
                 >
                   Study this deck
