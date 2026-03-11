@@ -10,6 +10,7 @@ import { useDailyQuote } from './hooks/useDailyQuote'
 import { useDecks } from './hooks/useDecks'
 import { useSpeech } from './hooks/useSpeech'
 import { useStudySession } from './hooks/useStudySession'
+import { getJapaneseWordSpeechText } from './lib/japaneseText'
 import { DEFAULT_SETTINGS, type AppSettings, type ViewName } from './types'
 import { getSettings, saveSettings } from './lib/db'
 
@@ -271,7 +272,7 @@ function App() {
       return
     }
 
-    speakText(currentEntry.japanese, {
+    speakText(getJapaneseWordSpeechText(currentEntry.japanese), {
       lang: 'ja-JP',
       preferredVoiceURI: settings.preferredJapaneseVoiceURI,
     })
@@ -355,11 +356,11 @@ function App() {
                   </p>
                 </div>
                 <div className="flex h-full flex-col justify-between rounded-2xl border border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] p-4">
-                  <p className="eyebrow">Current progress</p>
+                  <p className="eyebrow">Current group</p>
                   <p className="font-display text-2xl text-[var(--color-text-strong)]">
-                    {session.groupSnapshot.currentIndexInGroup}
+                    {session.groupSnapshot.currentGroupNumber}
                     <span className="ml-2 text-base text-[var(--color-text-muted)]">
-                      / {session.groupSnapshot.currentGroupSize}
+                      / {session.groupSnapshot.totalGroups}
                     </span>
                   </p>
                 </div>
