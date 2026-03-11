@@ -1,29 +1,15 @@
-import type { DailyQuoteCache, ThemeMode } from '../types'
+import type { DailyQuoteCache } from '../types'
 
 type DailyQuoteHeroProps = {
   deckCount: number
   quote: DailyQuoteCache
-  onChangeView: (view: 'study' | 'library' | 'settings') => void
   onSpeak: () => void
-  onToggleTheme: () => void
-  currentView: 'study' | 'library' | 'settings'
-  themeMode: ThemeMode
 }
-
-const NAV_ITEMS = [
-  { id: 'study', label: 'Study' },
-  { id: 'library', label: 'Decks' },
-  { id: 'settings', label: 'Settings' },
-] as const
 
 export function DailyQuoteHero({
   deckCount,
   quote,
-  onChangeView,
   onSpeak,
-  onToggleTheme,
-  currentView,
-  themeMode,
 }: DailyQuoteHeroProps) {
   return (
     <div className="glass-panel flex min-h-[14rem] flex-col justify-between rounded-[1.75rem] border border-[var(--color-surface-border)] px-6 py-6">
@@ -54,44 +40,9 @@ export function DailyQuoteHero({
         ) : null}
       </button>
 
-      <div className="mt-6 flex flex-wrap items-center gap-2">
-        <nav className="flex flex-wrap gap-2">
-        {NAV_ITEMS.map((item) => {
-          const active = item.id === currentView
-
-          return (
-            <button
-              key={item.id}
-              className={`inline-flex h-11 items-center justify-center rounded-full border px-5 text-sm font-semibold leading-none transition ${
-                active
-                  ? 'border-transparent'
-                  : 'border-[var(--color-surface-border)] bg-[var(--color-surface-soft)] text-[var(--color-text-strong)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
-              }`}
-              onClick={() => onChangeView(item.id)}
-              style={
-                active
-                  ? {
-                      backgroundColor: 'var(--color-nav-active-bg)',
-                      color: 'var(--color-nav-active-text)',
-                    }
-                  : undefined
-              }
-              type="button"
-            >
-              {item.label}
-            </button>
-          )
-        })}
-        </nav>
-        <button
-          aria-label={`Switch to ${themeMode === 'dark' ? 'light' : 'dark'} mode`}
-          className="inline-flex h-11 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-5 text-sm font-semibold leading-none text-[var(--color-text-strong)] transition hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
-          onClick={onToggleTheme}
-          type="button"
-        >
-          {themeMode === 'dark' ? 'Light' : 'Dark'}
-        </button>
-      </div>
+      <p className="mt-6 max-w-xl text-sm leading-6 text-[var(--color-text-body)]">
+        Tap the quote to hear it. The top floating header keeps study, decks, settings, and theme controls always within reach while this card stays focused on the daily quote.
+      </p>
     </div>
   )
 }

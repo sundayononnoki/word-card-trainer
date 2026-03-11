@@ -327,15 +327,12 @@ function App() {
         deckCount={decks.length}
         heroPanel={
           <DailyQuoteHero
-            currentView={view}
             deckCount={decks.length}
-            onChangeView={setView}
             onSpeak={handleSpeakDailyQuote}
-            onToggleTheme={toggleThemeMode}
             quote={dailyQuote}
-            themeMode={settings.themeMode}
           />
         }
+        themeMode={settings.themeMode}
         headerPanel={
           activeDeck && view === 'study' ? (
             <div className="glass-panel flex h-full items-stretch rounded-[1.75rem] border border-[var(--color-surface-border)] px-5 py-4">
@@ -389,6 +386,7 @@ function App() {
           )
         }
         onChangeView={setView}
+        onToggleTheme={toggleThemeMode}
       >
         {!settingsReady || !ready ? (
           <div className="flex min-h-[60vh] items-center justify-center">
