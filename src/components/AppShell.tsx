@@ -58,7 +58,7 @@ export function AppShell({
     <div className="surface-grid relative min-h-screen overflow-hidden px-4 py-4 text-[var(--color-text-body)] sm:px-6 sm:py-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,var(--color-glow-warm),transparent_22%),radial-gradient(circle_at_100%_20%,var(--color-glow-cool),transparent_18%)]" />
       <div className="pointer-events-none fixed inset-x-0 top-4 z-40 px-4 sm:top-5 sm:px-6 lg:px-8">
-        <div className="pointer-events-auto mx-auto flex max-w-7xl justify-center xl:justify-start">
+        <div className="pointer-events-auto mx-auto flex max-w-7xl justify-center">
           <div className="glass-panel flex min-h-16 items-center rounded-[1.75rem] border border-[var(--color-surface-border)] px-3 py-3 shadow-[0_20px_60px_var(--color-shadow-strong)]">
             <div className="flex flex-wrap items-center gap-2 rounded-[1.25rem] bg-[var(--color-surface-soft)]/60 p-1.5">
               {NAV_ITEMS.map((item) => {
