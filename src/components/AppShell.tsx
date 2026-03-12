@@ -59,15 +59,16 @@ export function AppShell({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,var(--color-glow-warm),transparent_22%),radial-gradient(circle_at_100%_20%,var(--color-glow-cool),transparent_18%)]" />
       <div className="relative mx-auto flex min-h-[calc(100vh-2rem)] max-w-7xl flex-col gap-6">
         <div className="flex justify-center">
-          <div className="glass-panel w-fit max-w-full rounded-[1.75rem] border border-[var(--color-surface-border)] px-2 py-2 shadow-[0_20px_60px_var(--color-shadow-strong)] sm:px-3 sm:py-3">
-            <div className="flex flex-nowrap items-center gap-2 overflow-x-auto rounded-[1.25rem] bg-[var(--color-surface-soft)]/60 p-1.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-              {NAV_ITEMS.map((item) => {
+          <div className="glass-panel w-full max-w-[44rem] rounded-[1.75rem] border border-[var(--color-surface-border)] px-2 py-2 shadow-[0_20px_60px_var(--color-shadow-strong)] sm:w-fit sm:max-w-full sm:px-3 sm:py-3">
+            <div className="flex items-center gap-1.5 rounded-[1.25rem] bg-[var(--color-surface-soft)]/60 p-1.5 sm:gap-2">
+              <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:flex-none sm:gap-2">
+                {NAV_ITEMS.map((item) => {
                 const active = item.id === currentView
 
                 return (
                   <button
                     key={item.id}
-                    className={`inline-flex h-10 shrink-0 items-center justify-center rounded-full border px-4 text-sm font-semibold leading-none transition sm:h-11 sm:px-5 ${
+                    className={`inline-flex h-10 min-w-0 flex-1 items-center justify-center rounded-full border px-3 text-[0.95rem] font-semibold leading-none transition sm:h-11 sm:flex-none sm:px-5 sm:text-sm ${
                       active
                         ? 'border-transparent'
                         : 'border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-strong)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
@@ -86,10 +87,11 @@ export function AppShell({
                     {item.label}
                   </button>
                 )
-              })}
+                })}
+              </div>
               <button
                 aria-label={`Switch to ${themeMode === 'dark' ? 'light' : 'dark'} mode`}
-                className="group inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 text-[var(--color-text-strong)] transition duration-300 hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)] sm:h-11"
+                className="group inline-flex h-10 w-[3.6rem] shrink-0 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-1.5 text-[var(--color-text-strong)] transition duration-300 hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)] sm:h-11 sm:w-auto sm:px-2"
                 onClick={onToggleTheme}
                 type="button"
               >
