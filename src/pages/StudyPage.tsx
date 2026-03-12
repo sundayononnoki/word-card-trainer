@@ -3,6 +3,8 @@ import { WordCard } from '../components/WordCard'
 import type { DeckRecord, GroupSnapshot, VocabEntry } from '../types'
 
 const STUDY_GUIDE_STORAGE_KEY = 'word-card-trainer-study-guide-dismissed-v1'
+const GUIDE_TAP_ICON_SRC = `${import.meta.env.BASE_URL}tap.png`
+const GUIDE_SWIPE_ICON_SRC = `${import.meta.env.BASE_URL}swap.png`
 
 type StudyPageProps = {
   activeDeck: DeckRecord | null
@@ -84,28 +86,29 @@ export function StudyPage({
         {showGuide ? (
           <button
             aria-label="Dismiss study guide"
-            className="absolute inset-0 z-20 flex items-center justify-center rounded-[2.5rem] bg-black/40 px-6 py-8 text-white backdrop-blur-[3px]"
+            className="absolute inset-0 z-20 flex items-center justify-center rounded-[2.5rem] px-6 py-8 backdrop-blur-[3px]"
             onClick={dismissGuide}
+            style={{
+              backgroundColor: 'var(--color-guide-overlay)',
+              color: 'var(--color-guide-fg)',
+            }}
             type="button"
           >
             <div className="pointer-events-none flex max-w-md flex-col items-center justify-center gap-10 text-center">
               <div className="space-y-4">
-                <span className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full border border-white/30 bg-white/10">
-                  <svg aria-hidden="true" className="h-11 w-11" fill="none" viewBox="0 0 24 24">
-                    <path
-                      d="M11.5 4.2v7.5m0-7.5c0-1 .8-1.7 1.7-1.7s1.7.8 1.7 1.7v7.2m-3.4.3V6.8c0-1-.8-1.7-1.7-1.7S8.1 5.8 8.1 6.8v6.1m7 5.3c-.8.9-1.9 1.5-3.1 1.7-2.5.3-4.8-1.3-5.3-3.7l-.6-3.5c-.2-.9.4-1.8 1.3-2 .7-.1 1.4.1 1.8.7l1.2 1.7"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.8"
-                    />
-                    <path
-                      d="M5.5 5.4 4 4m14.5 1.4L20 4m-6.8-.8V1.5M3.2 9.4H1.5m21 0h-1.7"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeWidth="1.8"
-                    />
-                  </svg>
+                <span
+                  className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full"
+                  style={{
+                    border: '1px solid var(--color-guide-pill-border)',
+                    backgroundColor: 'var(--color-guide-pill-bg)',
+                  }}
+                >
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    className="study-guide-icon h-14 w-14 object-contain"
+                    src={GUIDE_TAP_ICON_SRC}
+                  />
                 </span>
                 <p className="text-2xl font-semibold tracking-tight sm:text-3xl">
                   Tap any card to hear it aloud
@@ -113,30 +116,33 @@ export function StudyPage({
               </div>
 
               <div className="space-y-4">
-                <span className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full border border-white/30 bg-white/10">
-                  <svg aria-hidden="true" className="h-11 w-11" fill="none" viewBox="0 0 24 24">
-                    <path
-                      d="M2.5 8.5h9.8m0 0-2.6-2.4m2.6 2.4-2.6 2.4M11.5 15.5H1.7m0 0 2.6-2.4m-2.6 2.4 2.6 2.4"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.8"
-                    />
-                    <path
-                      d="M17.2 4.4v7.4m0-7.4c0-1 .8-1.7 1.7-1.7s1.7.8 1.7 1.7v7.2m-3.4.3V7c0-1-.8-1.7-1.7-1.7S13.8 6 13.8 7v6m7 5.3c-.8.9-1.9 1.5-3.1 1.7-2.5.3-4.8-1.3-5.3-3.7l-.6-3.5c-.2-.9.4-1.8 1.3-2 .7-.1 1.4.1 1.8.7l1.2 1.7"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.8"
-                    />
-                  </svg>
+                <span
+                  className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full"
+                  style={{
+                    border: '1px solid var(--color-guide-pill-border)',
+                    backgroundColor: 'var(--color-guide-pill-bg)',
+                  }}
+                >
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    className="study-guide-icon h-14 w-14 object-contain"
+                    src={GUIDE_SWIPE_ICON_SRC}
+                  />
                 </span>
                 <p className="text-2xl font-semibold tracking-tight sm:text-3xl">
                   Swipe left or right to change cards
                 </p>
               </div>
 
-              <p className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm uppercase tracking-[0.22em] text-white/80">
+              <p
+                className="rounded-full px-4 py-2 text-sm uppercase tracking-[0.22em]"
+                style={{
+                  border: '1px solid var(--color-guide-pill-border)',
+                  backgroundColor: 'var(--color-guide-pill-bg)',
+                  color: 'color-mix(in srgb, var(--color-guide-fg) 80%, transparent)',
+                }}
+              >
                 Tap anywhere to continue
               </p>
             </div>
