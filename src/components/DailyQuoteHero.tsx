@@ -1,28 +1,23 @@
 import type { DailyQuoteCache } from '../types'
 
 type DailyQuoteHeroProps = {
-  deckCount: number
   quote: DailyQuoteCache
   onSpeak: () => void
 }
 
 export function DailyQuoteHero({
-  deckCount,
   quote,
   onSpeak,
 }: DailyQuoteHeroProps) {
   return (
     <div className="glass-panel flex min-h-[14rem] flex-col justify-between rounded-[1.75rem] border border-[var(--color-surface-border)] px-6 py-6">
-      <div className="flex items-start justify-between gap-4">
+      <div>
         <div>
           <p className="eyebrow">Word Card Trainer</p>
           <p className="mt-2 text-xs uppercase tracking-[0.28em] text-[var(--color-text-muted)]">
             Daily quote
           </p>
         </div>
-        <span className="rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-3 py-1 text-sm text-[var(--color-text-muted)]">
-          {deckCount} deck{deckCount === 1 ? '' : 's'}
-        </span>
       </div>
 
       <button

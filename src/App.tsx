@@ -324,10 +324,8 @@ function App() {
     <>
       <AppShell
         currentView={view}
-        deckCount={decks.length}
         heroPanel={
           <DailyQuoteHero
-            deckCount={decks.length}
             onSpeak={handleSpeakDailyQuote}
             quote={dailyQuote}
           />

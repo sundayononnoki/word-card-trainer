@@ -3,7 +3,6 @@ import type { ThemeMode, ViewName } from '../types'
 
 type AppShellProps = {
   currentView: ViewName
-  deckCount: number
   themeMode: ThemeMode
   heroPanel?: ReactNode
   headerPanel?: ReactNode
@@ -46,7 +45,6 @@ function ThemeModeIcon({ mode }: { mode: ThemeMode }) {
 
 export function AppShell({
   currentView,
-  deckCount,
   themeMode,
   heroPanel,
   headerPanel,
@@ -91,11 +89,21 @@ export function AppShell({
               </div>
               <button
                 aria-label={`Switch to ${themeMode === 'dark' ? 'light' : 'dark'} mode`}
-                className="group inline-flex h-10 w-[3.6rem] shrink-0 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-1.5 text-[var(--color-text-strong)] transition duration-300 hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)] sm:h-11 sm:w-auto sm:px-2"
+                className="group inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-1 text-[var(--color-text-strong)] transition duration-300 hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)] sm:h-11 sm:w-auto sm:px-2"
                 onClick={onToggleTheme}
                 type="button"
               >
-                <span className="relative grid grid-cols-2 items-center gap-1 rounded-full bg-[var(--color-surface-soft)]/55 p-1">
+                <span
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full sm:hidden"
+                  style={{
+                    backgroundColor: 'var(--color-nav-active-bg)',
+                    color: 'var(--color-nav-active-text)',
+                    boxShadow: '0 8px 24px var(--color-shadow-strong)',
+                  }}
+                >
+                  <ThemeModeIcon mode={themeMode} />
+                </span>
+                <span className="relative hidden grid-cols-2 items-center gap-1 rounded-full bg-[var(--color-surface-soft)]/55 p-1 sm:grid">
                   <span
                     aria-hidden="true"
                     className={`pointer-events-none absolute left-1 top-1 inline-flex h-7 w-7 rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
@@ -138,9 +146,6 @@ export function AppShell({
                   <h1 className="font-display text-4xl tracking-tight text-[var(--color-text-strong)] sm:text-5xl">
                     Built for deep, daily review.
                   </h1>
-                  <span className="rounded-full border border-white/10 bg-white/6 px-3 py-1 text-sm text-[var(--color-text-muted)]">
-                    {deckCount} deck{deckCount === 1 ? '' : 's'}
-                  </span>
                 </div>
                 <p className="mt-6 max-w-xl text-sm leading-6 text-[var(--color-text-body)]">
                   One focused card per screen, local-first deck progress, and fast switching between study, deck management, and settings.
