@@ -244,22 +244,13 @@ export function WordCard({
             </span>
             <div className="flex min-h-full w-full items-center justify-center text-center">
               {hideEnglishByDefault && !isEnglishVisible ? (
-                <AutoFitText
-                  containerClassName="px-2 py-3"
-                  fitKey="study-en-word-hidden"
-                  maxFontSize={96}
-                  minFontSize={26}
-                  multiline={false}
-                  safePaddingY={12}
-                  textClassName="space-y-3 text-center"
-                >
-                  <span className={`block font-display tracking-tight text-transparent blur-md ${FLUORESCENT_GREEN}`}>
-                    {entry.english}
-                  </span>
-                  <span className="block text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-text-muted)]">
-                    Tap to reveal and speak
-                  </span>
-                </AutoFitText>
+                <div className="flex w-full items-center justify-center px-4 py-4">
+                  <div className="space-y-3 text-center">
+                    <span className="block text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-text-muted)]">
+                      Tap to reveal and speak
+                    </span>
+                  </div>
+                </div>
               ) : (
                 <AutoFitText
                   containerClassName="px-2 py-3"
