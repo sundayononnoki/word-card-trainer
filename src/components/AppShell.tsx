@@ -57,17 +57,17 @@ export function AppShell({
   return (
     <div className="surface-grid relative min-h-screen overflow-hidden px-4 py-4 text-[var(--color-text-body)] sm:px-6 sm:py-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,var(--color-glow-warm),transparent_22%),radial-gradient(circle_at_100%_20%,var(--color-glow-cool),transparent_18%)]" />
-      <div className="pointer-events-none fixed inset-x-0 top-4 z-40 px-4 sm:top-5 sm:px-6 lg:px-8">
-        <div className="pointer-events-auto mx-auto flex max-w-7xl justify-center">
-          <div className="glass-panel flex min-h-16 items-center rounded-[1.75rem] border border-[var(--color-surface-border)] px-3 py-3 shadow-[0_20px_60px_var(--color-shadow-strong)]">
-            <div className="flex flex-wrap items-center gap-2 rounded-[1.25rem] bg-[var(--color-surface-soft)]/60 p-1.5">
+      <div className="relative mx-auto flex min-h-[calc(100vh-2rem)] max-w-7xl flex-col gap-6">
+        <div className="flex justify-center">
+          <div className="glass-panel w-fit max-w-full rounded-[1.75rem] border border-[var(--color-surface-border)] px-2 py-2 shadow-[0_20px_60px_var(--color-shadow-strong)] sm:px-3 sm:py-3">
+            <div className="flex flex-nowrap items-center gap-2 overflow-x-auto rounded-[1.25rem] bg-[var(--color-surface-soft)]/60 p-1.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {NAV_ITEMS.map((item) => {
                 const active = item.id === currentView
 
                 return (
                   <button
                     key={item.id}
-                    className={`inline-flex h-11 items-center justify-center rounded-full border px-5 text-sm font-semibold leading-none transition ${
+                    className={`inline-flex h-10 shrink-0 items-center justify-center rounded-full border px-4 text-sm font-semibold leading-none transition sm:h-11 sm:px-5 ${
                       active
                         ? 'border-transparent'
                         : 'border-[var(--color-surface-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-strong)] hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]'
@@ -89,7 +89,7 @@ export function AppShell({
               })}
               <button
                 aria-label={`Switch to ${themeMode === 'dark' ? 'light' : 'dark'} mode`}
-                className="group inline-flex h-11 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 text-[var(--color-text-strong)] transition duration-300 hover:-translate-y-0.5 hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)]"
+                className="group inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-pill-border)] bg-[var(--color-pill-bg)] px-2 text-[var(--color-text-strong)] transition duration-300 hover:border-[var(--color-accent-primary)] hover:bg-[var(--color-surface-soft-hover)] sm:h-11"
                 onClick={onToggleTheme}
                 type="button"
               >
@@ -127,8 +127,6 @@ export function AppShell({
             </div>
           </div>
         </div>
-      </div>
-      <div className="relative mx-auto flex min-h-[calc(100vh-2rem)] max-w-7xl flex-col gap-6 pt-24 sm:pt-26">
         <header className="glass-panel rounded-[2rem] px-5 py-5 sm:px-7">
           <div className="grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(520px,0.95fr)] xl:items-stretch">
             {heroPanel ?? (
