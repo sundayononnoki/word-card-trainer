@@ -254,6 +254,7 @@ export function WordCard({
               ) : (
                 <AutoFitText
                   containerClassName="px-2 py-3"
+                  contentKey={entry.english}
                   fitKey="study-en-word"
                   maxFontSize={96}
                   minFontSize={24}
@@ -284,6 +285,7 @@ export function WordCard({
               {japaneseRuby ? (
                 <AutoFitText
                   containerClassName="px-2"
+                  contentKey={entry.japanese}
                   fitKey="study-ja-word-ruby"
                   maxFontSize={82}
                   minFontSize={22}
@@ -300,6 +302,7 @@ export function WordCard({
               ) : (
                 <AutoFitText
                   containerClassName="px-2"
+                  contentKey={entry.japanese}
                   fitKey="study-ja-word"
                   maxFontSize={82}
                   minFontSize={22}
@@ -328,6 +331,7 @@ export function WordCard({
             <div className="flex min-h-full w-full items-center justify-center">
               <AutoFitText
                 containerClassName="px-3"
+                contentKey={`${entry.english}::${entry.englishSentence}`}
                 fitKey="study-en-sentence"
                 lineHeight={1.15}
                 maxFontSize={52}
@@ -355,6 +359,7 @@ export function WordCard({
             <div className="flex min-h-full w-full items-center justify-center">
               <AutoFitText
                 containerClassName="px-3"
+                contentKey={`${entry.japanese}::${entry.japaneseSentence}`}
                 fitKey="study-ja-sentence"
                 lineHeight={1.2}
                 maxFontSize={56}

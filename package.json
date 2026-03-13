@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:pages": "VITE_APP_BASE=/word-card-trainer/ tsc -b && vite build",
     "lint": "eslint .",
     "test": "vitest run",
     "preview": "vite preview"

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 type SpeakLanguage = 'en-US' | 'ja-JP'
 
@@ -58,10 +58,15 @@ function pickVoice(
 
 export function useSpeech() {
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
+  const voicesRef = useRef<SpeechSynthesisVoice[]>([])
   const isSupported =
     typeof window !== 'undefined' &&
     'speechSynthesis' in window &&
     'SpeechSynthesisUtterance' in window
+
+  useEffect(() => {
+    voicesRef.current = voices
+  }, [voices])
 
   useEffect(() => {
     if (!isSupported) {
@@ -93,7 +98,7 @@ export function useSpeech() {
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.lang = lang
 
-      const voice = pickVoice(voices, lang, preferredVoiceURI)
+      const voice = pickVoice(voicesRef.current, lang, preferredVoiceURI)
       if (voice) {
         utterance.voice = voice
       }
@@ -101,7 +106,7 @@ export function useSpeech() {
       window.speechSynthesis.cancel()
       window.speechSynthesis.speak(utterance)
     },
-    [isSupported, voices],
+    [isSupported],
   )
 
   return {

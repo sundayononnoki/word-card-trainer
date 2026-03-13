@@ -1,4 +1,3 @@
-import * as XLSX from 'xlsx'
 import type { DeckRecord, VocabEntry } from '../types'
 
 function normalizeCell(value: unknown): string {
@@ -75,6 +74,7 @@ export async function createImportedDeck(file: File): Promise<{
   deck: DeckRecord
   entries: VocabEntry[]
 }> {
+  const XLSX = await import('xlsx')
   const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' })
   const sheetName = workbook.SheetNames.includes('list 1') ? 'list 1' : workbook.SheetNames[0]
   const sheet = workbook.Sheets[sheetName]

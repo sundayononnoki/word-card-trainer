@@ -6,11 +6,17 @@ type FitCacheEntry = {
   height: number
 }
 
+type FitState = {
+  cacheKey: string
+  fontSize: number
+}
+
 type AutoFitTextProps = {
   children: ReactNode
   containerClassName?: string
   textClassName?: string
   fitKey: string
+  contentKey?: string
   minFontSize: number
   maxFontSize: number
   lineHeight?: number
@@ -20,12 +26,18 @@ type AutoFitTextProps = {
 }
 
 const fitCache = new Map<string, FitCacheEntry>()
+const fitSlotCache = new Map<string, number>()
+
+function getInitialFontSize(fitKey: string, cacheKey: string, maxFontSize: number) {
+  return fitCache.get(cacheKey)?.fontSize ?? fitSlotCache.get(fitKey) ?? maxFontSize
+}
 
 export function AutoFitText({
   children,
   containerClassName = '',
   textClassName = '',
   fitKey,
+  contentKey,
   minFontSize,
   maxFontSize,
   lineHeight = 1.1,
@@ -33,9 +45,17 @@ export function AutoFitText({
   safePaddingX = 0,
   safePaddingY = 0,
 }: AutoFitTextProps) {
+  const cacheKey = contentKey ? `${fitKey}::${contentKey}` : fitKey
   const containerRef = useRef<HTMLDivElement | null>(null)
   const textRef = useRef<HTMLDivElement | null>(null)
-  const [fontSize, setFontSize] = useState(() => fitCache.get(fitKey)?.fontSize ?? maxFontSize)
+  const [fitState, setFitState] = useState<FitState>(() => ({
+    cacheKey,
+    fontSize: getInitialFontSize(fitKey, cacheKey, maxFontSize),
+  }))
+  const fontSize =
+    fitState.cacheKey === cacheKey
+      ? fitState.fontSize
+      : getInitialFontSize(fitKey, cacheKey, maxFontSize)
 
   useLayoutEffect(() => {
     const container = containerRef.current
@@ -77,12 +97,16 @@ export function AutoFitText({
         }
       }
 
-      fitCache.set(fitKey, {
+      fitCache.set(cacheKey, {
         fontSize: best,
         width: availableWidth,
         height: availableHeight,
       })
-      setFontSize(best)
+      fitSlotCache.set(fitKey, best)
+      setFitState({
+        cacheKey,
+        fontSize: best,
+      })
     }
 
     const scheduleFit = () => {
@@ -90,7 +114,7 @@ export function AutoFitText({
       frameId = requestAnimationFrame(fitText)
     }
 
-    const cached = fitCache.get(fitKey)
+    const cached = fitCache.get(cacheKey)
     const width = container.clientWidth
     const height = container.clientHeight
 
@@ -106,7 +130,7 @@ export function AutoFitText({
 
       const nextWidth = Math.round(entry.contentRect.width)
       const nextHeight = Math.round(entry.contentRect.height)
-      const nextCached = fitCache.get(fitKey)
+      const nextCached = fitCache.get(cacheKey)
 
       if (
         nextCached &&
@@ -124,7 +148,7 @@ export function AutoFitText({
       cancelAnimationFrame(frameId)
       resizeObserver.disconnect()
     }
-  }, [fitKey, lineHeight, maxFontSize, minFontSize, multiline, safePaddingX, safePaddingY])
+  }, [cacheKey, fitKey, lineHeight, maxFontSize, minFontSize, multiline, safePaddingX, safePaddingY])
 
   return (
     <div

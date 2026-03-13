@@ -133,14 +133,24 @@ function App() {
   }, [currentEntry?.id, settings.hideEnglishByDefault])
 
   useEffect(() => {
-    if (!settings.autoSpeakWord || !currentEntry) {
+    const currentEntryId = currentEntry?.id
+    const currentEnglish = currentEntry?.english
+
+    if (!settings.autoSpeakWord || !currentEntryId || !currentEnglish) {
       return
     }
-    speakText(currentEntry.english, {
+
+    speakText(currentEnglish, {
       lang: 'en-US',
       preferredVoiceURI: settings.preferredVoiceURI,
     })
-  }, [currentEntry, settings.autoSpeakWord, settings.preferredVoiceURI, speakText])
+  }, [
+    currentEntry?.english,
+    currentEntry?.id,
+    settings.autoSpeakWord,
+    settings.preferredVoiceURI,
+    speakText,
+  ])
 
   useEffect(() => {
     function handleStudyKeyDown(event: KeyboardEvent) {

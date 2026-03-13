@@ -10,6 +10,16 @@ import {
 import { createImportedDeck } from '../lib/importDeck'
 import type { DeckRecord, NewVocabEntryDraft, StudyProgress, VocabEntry } from '../types'
 
+function buildProgressMap(progressList: StudyProgress[]) {
+  const nextMap: Record<string, StudyProgress> = {}
+
+  for (const progress of progressList) {
+    nextMap[progress.deckId] = progress
+  }
+
+  return nextMap
+}
+
 export function useDecks(activeDeckId: string) {
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -17,21 +27,10 @@ export function useDecks(activeDeckId: string) {
   const [entries, setEntries] = useState<VocabEntry[]>([])
   const [progressByDeck, setProgressByDeck] = useState<Record<string, StudyProgress>>({})
 
-  async function refreshProgress() {
-    const allProgress = await getAllProgress()
-    const nextMap: Record<string, StudyProgress> = {}
-
-    for (const progress of allProgress) {
-      nextMap[progress.deckId] = progress
-    }
-
-    setProgressByDeck(nextMap)
-  }
-
   async function refreshDeckIndex() {
-    const deckRecords = await listDecks()
+    const [deckRecords, allProgress] = await Promise.all([listDecks(), getAllProgress()])
     setDecks(deckRecords)
-    await refreshProgress()
+    setProgressByDeck(buildProgressMap(allProgress))
   }
 
   async function refreshActiveDeckEntries(deckId: string) {
@@ -48,17 +47,12 @@ export function useDecks(activeDeckId: string) {
         if (cancelled) {
           return
         }
-        const deckRecords = await listDecks()
-        const allProgress = await getAllProgress()
-        const nextMap: Record<string, StudyProgress> = {}
-        for (const progress of allProgress) {
-          nextMap[progress.deckId] = progress
-        }
+        const [deckRecords, allProgress] = await Promise.all([listDecks(), getAllProgress()])
         if (cancelled) {
           return
         }
         setDecks(deckRecords)
-        setProgressByDeck(nextMap)
+        setProgressByDeck(buildProgressMap(allProgress))
         setReady(true)
       } catch (caughtError) {
         if (!cancelled) {
